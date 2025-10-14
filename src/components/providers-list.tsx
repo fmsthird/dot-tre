@@ -69,22 +69,25 @@ export default function ProvidersList() {
   return (
     <div className="container mx-auto p-4 space-y-6">
       <div className="flex flex-col md:flex-row md:justify-between md:items-center w-full gap-4">
-        <h1 className="text-2xl font-bold text-center">
-          LIST OF ACCREDITED TREs PER LGU
-        </h1>
+        <div className="text-center md:text-left space-y-1">
+          <h1 className="text-2xl font-bold text-center">
+            ACCREDITED TREs PER LGU
+          </h1>
+          <p>As of August 31, 2025</p>
+        </div>
 
         <div className="flex gap-2">
           <Input
             type="text"
-            placeholder="Search by name, location, or type..."
+            placeholder="Search by name, location, or accreditation no..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full md:w-md"
+            className="w-full md:w-md py-6"
           />
           <Button
             variant="outline"
             onClick={() => setSearchTerm('')}
-            className="shrink-0 bg-primary text-primary-foreground hover:bg-primary/90"
+            className="p-6 w-1/5 bg-primary text-white hover:bg-primary/90 hover:text-white cursor-pointer"
           >
             Clear
           </Button>
@@ -110,10 +113,13 @@ export default function ProvidersList() {
                   <div className="space-y-2 text-sm">
                     <p>{provider.address}</p>
                     <p>
-                      <strong>Phone:</strong> <a
-                          href={`tel:${provider.phone}`}
-                          className="text-blue-600 hover:underline"
-                        >{provider.phone}</a>
+                      <strong>Phone:</strong>{' '}
+                      <a
+                        href={`tel:${provider.phone}`}
+                        className="text-blue-600 hover:underline"
+                      >
+                        {provider.phone}
+                      </a>
                     </p>
                     {provider.email && (
                       <p>
@@ -142,7 +148,7 @@ export default function ProvidersList() {
 
       {Object.keys(groupedProviders).length === 0 && (
         <p className="text-center text-gray-500">
-          No providers found matching your search.
+          No result found matching your search.
         </p>
       )}
     </div>
