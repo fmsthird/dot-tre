@@ -1,12 +1,14 @@
 import Papa from 'papaparse'
 import { Provider, ProviderResponse } from '@/types/provider'
 
+const SHEET_ID = '1ST5Hu6tJl-IbIacORyA_rBuLEBPmqSOqpRkH9xt9Z2o'
+
 const PROVINCE_FILES = [
-  { id: 'agusan-norte', name: 'Agusan del Norte', file: '/list/Agusan-del-Norte.csv' },
-  { id: 'agusan-sur', name: 'Agusan del Sur', file: '/list/Agusan-del-Sur.csv' },
-  { id: 'dinagat', name: 'Dinagat Islands', file: '/list/Dinagat-Islands.csv' },
-  { id: 'surigao-norte', name: 'Surigao del Norte', file: '/list/Surigao-del-Norte.csv' },
-  { id: 'surigao-sur', name: 'Surigao del Sur', file: '/list/Surigao-del-Sur.csv' }
+  { id: 'agusan-norte', name: 'Agusan del Norte', file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=1484185172` },
+  { id: 'agusan-sur', name: 'Agusan del Sur', file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=1899865792` },
+  { id: 'dinagat', name: 'Dinagat Islands', file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=1686352904` },
+  { id: 'surigao-norte', name: 'Surigao del Norte', file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=291833559` },
+  { id: 'surigao-sur', name: 'Surigao del Sur', file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=22341524` }
 ]
 
 export interface Province {
