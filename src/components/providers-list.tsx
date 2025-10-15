@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -72,14 +73,29 @@ export default function ProvidersList() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
+      <div className="bg-gradient-to-b from-primary/5 to-background border-b border-border">
         <div className="container mx-auto p-4">
           <div className="flex flex-col gap-6">
-            <div className="text-center space-y-1">
-              <h1 className="text-3xl font-bold text-center bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                ACCREDITED TREs PER LGU
-              </h1>
-              <p className="text-muted-foreground">As of August 31, 2025</p>
+            <div className="text-center space-y-4">
+              <div className="flex justify-center relative">
+                <div className="w-24 h-24 relative animate-bounce-slow">
+                  <Image
+                    src="/logo.svg"
+                    alt="DOT Logo"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+              </div>
+              <div className="relative">
+                <div className="relative">
+                  <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-pink-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+                    ACCREDITED TREs PER LGU
+                  </h1>
+                  <p className="text-muted-foreground mt-2 text-lg">As of August 31, 2025</p>
+                </div>
+              </div>
             </div>
 
             <Tabs
@@ -136,26 +152,27 @@ export default function ProvidersList() {
               {Object.entries(groupedProviders).map(
                 ([location, locationProviders]) => (
                   <div key={location} className="mt-8 space-y-4">
-                    <h2 className="text-2xl font-bold text-foreground/80 border-b border-border pb-3">
+                    <h2 className="text-2xl font-bold border-b border-border pb-3 bg-gradient-to-r from-blue-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
                       {location}
                     </h2>
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                       {locationProviders.map((provider) => (
                         <Card
                           key={provider.id}
-                          className="group hover:shadow-lg transition-all duration-300 bg-card hover:bg-accent/5 border-border"
+                          className="group hover:shadow-xl transition-all duration-300 bg-gradient-to-b from-background to-accent/5 hover:scale-[1.02] border-border relative overflow-hidden"
                         >
-                          <CardHeader className="space-y-2">
-                            <CardTitle className="text-xl font-bold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
+                          <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          <CardHeader className="space-y-3 relative">
+                            <CardTitle className="text-xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
                               {provider.name}
                             </CardTitle>
-                            <p className="text-sm font-medium text-muted-foreground border border-border/50 rounded-full px-3 py-1 w-fit">
+                            <p className="text-sm font-medium bg-gradient-to-r from-pink-500/20 to-purple-500/20 border-none rounded-full px-4 py-1.5 w-fit">
                               {provider.enterpriseType}
                             </p>
                           </CardHeader>
                           <CardContent>
-                            <div className="space-y-3 text-sm">
-                              <p className="text-muted-foreground flex gap-2 items-start">
+                            <div className="space-y-3 text-sm relative">
+                              <p className="text-muted-foreground flex gap-2 items-start group/item hover:text-pink-500 transition-colors">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   width="16"
@@ -166,14 +183,14 @@ export default function ProvidersList() {
                                   strokeWidth="2"
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
-                                  className="mt-0.5"
+                                  className="mt-0.5 group-hover/item:text-pink-500 transition-colors"
                                 >
                                   <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
                                   <circle cx="12" cy="10" r="3" />
                                 </svg>
                                 <span>{provider.address}</span>
                               </p>
-                              <p className="flex gap-2 items-center">
+                              <p className="flex gap-2 items-center group/item hover:text-blue-500 transition-colors">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   width="16"
@@ -184,18 +201,19 @@ export default function ProvidersList() {
                                   strokeWidth="2"
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
+                                  className="group-hover/item:text-blue-500 transition-colors"
                                 >
                                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                                 </svg>
                                 <a
                                   href={`tel:${provider.phone}`}
-                                  className="text-primary hover:underline"
+                                  className="text-blue-500 hover:text-blue-600 hover:underline transition-colors"
                                 >
                                   {provider.phone}
                                 </a>
                               </p>
                               {provider.email && (
-                                <p className="flex gap-2 items-center">
+                                <p className="flex gap-2 items-center group/item hover:text-purple-500 transition-colors">
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="16"
@@ -206,6 +224,7 @@ export default function ProvidersList() {
                                     strokeWidth="2"
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
+                                    className="group-hover/item:text-purple-500 transition-colors"
                                   >
                                     <rect
                                       width="20"
@@ -218,14 +237,15 @@ export default function ProvidersList() {
                                   </svg>
                                   <a
                                     href={`mailto:${provider.email}`}
-                                    className="text-primary hover:underline"
+                                    className="text-purple-500 hover:text-purple-600 hover:underline transition-colors"
                                   >
                                     {provider.email}
                                   </a>
                                 </p>
                               )}
-                              <div className="pt-2 border-t border-border/50 mt-4 space-y-2">
-                                <p className="flex gap-2 items-center text-muted-foreground">
+                              <div className="pt-4 mt-4 space-y-2 relative">
+                                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+                                <p className="flex gap-2 items-center text-muted-foreground group/item hover:text-pink-500/80 transition-colors">
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="16"
@@ -236,16 +256,17 @@ export default function ProvidersList() {
                                     strokeWidth="2"
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
+                                    className="group-hover/item:text-pink-500/80 transition-colors"
                                   >
                                     <path d="M9 12h6" />
                                     <path d="M12 9v6" />
                                     <path d="M4 6v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2Z" />
                                   </svg>
-                                  <span>
+                                  <span className="group-hover/item:text-pink-500/80 transition-colors">
                                     Accreditation: {provider.accreditationNo}
                                   </span>
                                 </p>
-                                <p className="flex gap-2 items-center text-muted-foreground">
+                                <p className="flex gap-2 items-center text-muted-foreground group/item hover:text-purple-500/80 transition-colors">
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="16"
@@ -256,6 +277,7 @@ export default function ProvidersList() {
                                     strokeWidth="2"
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
+                                    className="group-hover/item:text-purple-500/80 transition-colors"
                                   >
                                     <rect
                                       width="18"
@@ -269,7 +291,9 @@ export default function ProvidersList() {
                                     <line x1="8" x2="8" y1="2" y2="6" />
                                     <line x1="3" x2="21" y1="10" y2="10" />
                                   </svg>
-                                  <span>Valid until: {provider.validity}</span>
+                                  <span className="group-hover/item:text-purple-500/80 transition-colors">
+                                    Valid until: {provider.validity}
+                                  </span>
                                 </p>
                               </div>
                             </div>
