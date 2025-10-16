@@ -22,6 +22,7 @@ export default function ProvidersList() {
     fetchProviders(activeProvince)
       .then((data) => {
         setProviders(data.providers || []);
+        console.log(data.providers);
         setLoading(false);
       })
       .catch((err) => {

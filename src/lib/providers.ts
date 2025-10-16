@@ -55,9 +55,16 @@ export async function fetchProviders(provinceId?: string): Promise<ProviderRespo
               
               // Process provider rows
               if ((row[0] || row[1]) && row[2]) {
+                // If no location is set, try to extract it from the address
+                let location = currentLocation;
+                if (!location && row[3]) {
+                  const addressParts = row[3].split(',').map(part => part.trim());
+                  location = addressParts[addressParts.length - 1] || '';
+                }
+
                 acc.push({
-                  id: `provider-${currentLocation.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${index}-${(row[2] || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
-                  location: currentLocation,
+                  id: `provider-${location.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${index}-${(row[2] || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+                  location: location,
                   enterpriseType: row[1] || '',
                   name: row[2] || '',
                   address: row[3] || '',
