@@ -13,6 +13,7 @@ export default function ProvidersList() {
   const [providers, setProviders] = useState<Provider[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
+  const [asOfDate, setAsOfDate] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState('');
   const [activeProvince, setActiveProvince] = useState<string>('agusan-norte');
   const provinces = getProvinces();
@@ -22,6 +23,7 @@ export default function ProvidersList() {
     fetchProviders(activeProvince)
       .then((data) => {
         setProviders(data.providers || []);
+        setAsOfDate(data.asOfDate || '');
         setLoading(false);
       })
       .catch((err) => {
@@ -95,7 +97,7 @@ export default function ProvidersList() {
                   ACCREDITED TRES PER LGU
                 </h1>
                 <p className="text-muted-foreground mt-2 text-lg">
-                  As of August 31, 2025
+                  As of {asOfDate}
                 </p>
               </div>
             </div>

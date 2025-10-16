@@ -1,5 +1,5 @@
 import Papa from 'papaparse'
-import { Provider, ProviderResponse } from '@/types/provider'
+import { Provider } from '@/types/provider'
 
 const SHEET_ID = '1ST5Hu6tJl-IbIacORyA_rBuLEBPmqSOqpRkH9xt9Z2o'
 
@@ -17,6 +17,12 @@ export interface Province {
   file: string;
 }
 
+export interface ProviderResponse {
+  providers: Provider[];
+  error?: string;
+  asOfDate?: string;
+}
+
 export const getProvinces = (): Province[] => PROVINCE_FILES
 
 export async function fetchProviders(provinceId?: string): Promise<ProviderResponse> {
@@ -29,7 +35,18 @@ export async function fetchProviders(provinceId?: string): Promise<ProviderRespo
     const responses = await Promise.all(filesToFetch.map(file => fetch(file)));
     const csvDataArray = await Promise.all(responses.map(response => response.text()));
     
+    // Extract the date from the first row
+    let asOfDate = '';
+    if (csvDataArray[0]) {
+      const firstRowMatch = csvDataArray[0].match(/As of (.*?)\./);
+      if (firstRowMatch) {
+        asOfDate = firstRowMatch[1].trim();
+      }
+    }
+    
     let allProviders: Provider[] = [];
+
+    console.log('Fetched CSV data for files:', csvDataArray);
     
     // Process each CSV file
     for (const csvData of csvDataArray) {
@@ -91,9 +108,9 @@ export async function fetchProviders(provinceId?: string): Promise<ProviderRespo
       allProviders = [...allProviders, ...result];
     }
     
-    return { providers: allProviders };
+    return { providers: allProviders, asOfDate };
   } catch (error) {
     console.error('Failed to fetch providers:', error);
-    return { providers: [], error: 'Failed to fetch providers data' };
+    return { providers: [], error: 'Failed to fetch providers data', asOfDate: '' };
   }
 }
