@@ -89,12 +89,14 @@ export default function ProvidersList() {
                 </div>
               </div>
               <div className="relative">
-                <div className="relative">
-                  <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-pink-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-                    ACCREDITED TREs PER LGU
-                  </h1>
-                  <p className="text-muted-foreground mt-2 text-lg">As of August 31, 2025</p>
-                </div>
+                <h1
+                  className="text-4xl leading-normal font-['Barbara'] text-center bg-gradient-to-r from-pink-500 via-blue-500 to-purple-500 bg-clip-text text-transparent tracking-wider"
+                >
+                  ACCREDITED TRES PER LGU
+                </h1>
+                <p className="text-muted-foreground mt-2 text-lg">
+                  As of August 31, 2025
+                </p>
               </div>
             </div>
 
@@ -103,8 +105,8 @@ export default function ProvidersList() {
               className="w-full"
               onValueChange={(value) => setActiveProvince(value)}
             >
-              <div className="flex items-center justify-center px-4">
-                <TabsList className="inline-flex h-auto min-h-[2.25rem] flex-wrap items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground w-fit gap-1">
+              <div className="flex items-center w-full justify-center">
+                <TabsList className="bg-blue-500 inline-flex h-auto min-h-[2.25rem] flex-wrap items-center justify-center rounded-lg p-2 text-white w-fit gap-1">
                   {provinces.map((province) => (
                     <TabsTrigger
                       key={province.id}
@@ -117,10 +119,10 @@ export default function ProvidersList() {
                 </TabsList>
               </div>
 
-              <div className="flex gap-2 w-full md:w-auto justify-center mt-4">
+              <div className="flex gap-2 w-full justify-center mt-4">
                 <Input
                   type="text"
-                  placeholder="Search by name, location, or accreditation no..."
+                  placeholder="Search by name, location..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full max-w-[600px] py-6 bg-background"
@@ -128,7 +130,7 @@ export default function ProvidersList() {
                 <Button
                   variant="outline"
                   onClick={() => setSearchTerm('')}
-                  className="p-6 min-w-[100px] bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                  className="p-6 min-w-[100px] bg-primary text-primary-foreground bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm cursor-pointer hover:text-white"
                 >
                   Clear
                 </Button>
@@ -152,7 +154,7 @@ export default function ProvidersList() {
               {Object.entries(groupedProviders).map(
                 ([location, locationProviders]) => (
                   <div key={location} className="mt-8 space-y-4">
-                    <h2 className="text-2xl font-bold border-b border-border pb-3 bg-gradient-to-r from-blue-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+                    <h2 className="text-2xl uppercase leading-normal font-['Barbara'] border-b border-border pb-3 bg-gradient-to-r from-blue-500 via-pink-500 to-purple-500 bg-clip-text text-transparent tracking-wide">
                       {location}
                     </h2>
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
