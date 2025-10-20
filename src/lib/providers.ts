@@ -1,15 +1,35 @@
-import Papa from 'papaparse'
-import { Provider } from '@/types/provider'
+import Papa from 'papaparse';
+import { Provider } from '@/types/provider';
 
-const SHEET_ID = '1ST5Hu6tJl-IbIacORyA_rBuLEBPmqSOqpRkH9xt9Z2o'
+const SHEET_ID = '1ST5Hu6tJl-IbIacORyA_rBuLEBPmqSOqpRkH9xt9Z2o';
 
 const PROVINCE_FILES = [
-  { id: 'agusan-norte', name: 'Agusan del Norte', file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=1484185172` },
-  { id: 'agusan-sur', name: 'Agusan del Sur', file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=1899865792` },
-  { id: 'dinagat', name: 'Dinagat Islands', file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=1686352904` },
-  { id: 'surigao-norte', name: 'Surigao del Norte', file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=291833559` },
-  { id: 'surigao-sur', name: 'Surigao del Sur', file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=22341524` }
-]
+  {
+    id: 'agusan-norte',
+    name: 'Agusan del Norte',
+    file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=1484185172`,
+  },
+  {
+    id: 'agusan-sur',
+    name: 'Agusan del Sur',
+    file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=1899865792`,
+  },
+  {
+    id: 'dinagat',
+    name: 'Dinagat Islands',
+    file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=1686352904`,
+  },
+  {
+    id: 'surigao-norte',
+    name: 'Surigao del Norte',
+    file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=291833559`,
+  },
+  {
+    id: 'surigao-sur',
+    name: 'Surigao del Sur',
+    file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=22341524`,
+  },
+];
 
 export interface Province {
   id: string;
@@ -23,94 +43,127 @@ export interface ProviderResponse {
   asOfDate?: string;
 }
 
-export const getProvinces = (): Province[] => PROVINCE_FILES
+export const getProvinces = (): Province[] => PROVINCE_FILES;
 
-export async function fetchProviders(provinceId?: string): Promise<ProviderResponse> {
+export async function fetchProviders(
+  provinceId?: string,
+): Promise<ProviderResponse> {
   try {
-    const filesToFetch = provinceId 
-      ? [PROVINCE_FILES.find(p => p.id === provinceId)!.file]
-      : PROVINCE_FILES.map(p => p.file);
+    const filesToFetch = provinceId
+      ? [PROVINCE_FILES.find((p) => p.id === provinceId)!.file]
+      : PROVINCE_FILES.map((p) => p.file);
 
-    // Fetch the CSV files
-    const responses = await Promise.all(filesToFetch.map(file => fetch(file)));
-    const csvDataArray = await Promise.all(responses.map(response => response.text()));
-    
-    // Extract the date from the first row
+    const responses = await Promise.all(filesToFetch.map((file) => fetch(file)));
+    const csvDataArray = await Promise.all(responses.map((res) => res.text()));
+
+    // Extract the date from the first sheet text
     let asOfDate = '';
     if (csvDataArray[0]) {
-      const firstRowMatch = csvDataArray[0].match(/As of (.*?)\./);
-      if (firstRowMatch) {
-        asOfDate = firstRowMatch[1].trim();
-      }
+      const match = csvDataArray[0].match(/As of (.*?)\./);
+      if (match) asOfDate = match[1].trim();
     }
-    
+
     let allProviders: Provider[] = [];
 
-    console.log('Fetched CSV data for files:', csvDataArray);
-    
-    // Process each CSV file
     for (const csvData of csvDataArray) {
-      const result = await new Promise<Provider[]>((resolve) => {
-        let providers: Provider[] = [];
+      const providers = await new Promise<Provider[]>((resolve) => {
+        const parsedProviders: Provider[] = [];
         let currentLocation = '';
-        
-        Papa.parse<string[]>(csvData, {
-          skipEmptyLines: 'greedy',
-          complete: (results) => {
-            providers = results.data.reduce<Provider[]>((acc, row, index) => {
-              // Skip first 4 rows (headers)
-              if (index < 4) return acc;
-              
-              // Skip empty rows
-              if (row.every(cell => cell === '')) return acc;
-              
-              // Check if this is a location marker row
-              if (row[0] === '' && row[1] && !row[2]) {
-                currentLocation = row[1].trim();
-                return acc;
-              }
-              
-              // Process provider rows
-              if ((row[0] || row[1]) && row[2]) {
-                // If no location is set, try to extract it from the address
-                let location = currentLocation;
-                if (!location && row[3]) {
-                  const addressParts = row[3].split(',').map(part => part.trim());
-                  location = addressParts[addressParts.length - 1] || '';
-                }
+        let hasStarted = false;
 
-                acc.push({
-                  id: `provider-${location.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${index}-${(row[2] || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
-                  location: location,
-                  enterpriseType: row[1] || '',
-                  name: row[2] || '',
-                  address: row[3] || '',
-                  phone: row[4] || '',
-                  email: row[5] || '',
-                  accreditationNo: row[6] || '',
-                  validity: row[7] || '',
-                  status: row[8] || ''
-                });
+        Papa.parse<string[]>(csvData, {
+          header: false,
+          skipEmptyLines: 'greedy',
+          quoteChar: '"',
+          dynamicTyping: false,
+          delimiter: ',',
+          complete: (results) => {
+            results.data.forEach((rawRow, index) => {
+              // Normalize: remove leading empty cells and trim
+              const row = rawRow.map((c) => (c || '').trim());
+              while (row.length && !row[0]) row.shift(); // Remove leading blanks
+
+              if (!hasStarted) {
+                if (row.some((c) => /Enterprise Name/i.test(c))) {
+                  hasStarted = true;
+                }
+                return;
               }
-              
-              return acc;
-            }, []);
-            
-            resolve(providers);
+
+              // Skip empty/junk rows
+              if (row.every((c) => !c)) return;
+
+              // Detect location rows (like BUTUAN CITY)
+              if (
+                row.length === 1 ||
+                (row.filter(Boolean).length === 1 && !/^\d+$/.test(row[0]))
+              ) {
+                currentLocation = row[0]?.trim() || row[1]?.trim() || '';
+                return;
+              }
+
+              // Pad to consistent column length
+              while (row.length < 9) row.push('');
+
+              // Column alignment fix: 
+              // If the first cell is numeric, assume it’s the “No.” column.
+              // Otherwise shift everything right.
+              let [
+                no,
+                enterpriseType,
+                name,
+                address,
+                contact,
+                email,
+                accNo,
+                validity,
+                status,
+              ] = row;
+
+              if (!/^\d+$/.test(no)) {
+                // Shift if first cell isn't numeric
+                [enterpriseType, name, address, contact, email, accNo, validity, status] =
+                  row;
+                no = '';
+              }
+
+              if (!name) return;
+
+              parsedProviders.push({
+                id: `provider-${index}-${(name || '')
+                  .toLowerCase()
+                  .replace(/[^a-z0-9]+/g, '-')}`,
+                location: currentLocation,
+                enterpriseType,
+                name,
+                address,
+                phone: contact,
+                email,
+                accreditationNo: accNo,
+                validity,
+                status,
+              });
+            });
+
+            resolve(parsedProviders);
           },
           error: (error: Error) => {
             console.error('Error parsing CSV:', error);
             resolve([]);
-          }
+          },
         });
       });
-      
-      allProviders = [...allProviders, ...result];
+
+      allProviders = [...allProviders, ...providers];
     }
-    
+
     return { providers: allProviders, asOfDate };
   } catch (error) {
     console.error('Failed to fetch providers:', error);
-    return { providers: [], error: 'Failed to fetch providers data', asOfDate: '' };
+    return {
+      providers: [],
+      error: 'Failed to fetch providers data',
+      asOfDate: '',
+    };
   }
 }
