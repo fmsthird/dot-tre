@@ -79,7 +79,7 @@ export default function ProvidersList() {
         <div className="container mx-auto p-4">
           <div className="flex flex-col gap-6">
             <div className="text-center space-y-4">
-              <div className="flex justify-center relative">
+              <div className="flex flex-col items-center justify-center relative">
                 <div className="w-24 h-24 relative animate-bounce-slow">
                   <Image
                     src="/logo.svg"
@@ -89,11 +89,10 @@ export default function ProvidersList() {
                     priority
                   />
                 </div>
+                <p className='font-medium'>CARAGA REGION</p>
               </div>
               <div className="relative">
-                <h1
-                  className="text-4xl leading-normal font-['Barbara'] text-center bg-gradient-to-r from-pink-500 via-blue-500 to-purple-500 bg-clip-text text-transparent tracking-wider"
-                >
+                <h1 className="text-4xl leading-normal font-['Barbara'] text-center bg-gradient-to-r from-pink-500 via-blue-500 to-purple-500 bg-clip-text text-transparent tracking-wider">
                   ACCREDITED TRES PER LGU
                 </h1>
                 <p className="text-muted-foreground mt-2 text-lg">
