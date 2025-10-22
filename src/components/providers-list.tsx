@@ -76,7 +76,11 @@ export default function ProvidersList() {
   return (
     <div className="min-h-screen bg-background">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/banner-horizontal.svg" className="w-full pointer-events-none" alt="festive banner" />
+      <img
+        src="/banner-horizontal.svg"
+        className="w-full pointer-events-none"
+        alt="festive banner"
+      />
       <div className="bg-gradient-to-b from-primary/5 to-background border-b border-border">
         <div className="container mx-auto p-4">
           <div className="flex flex-col gap-6">
@@ -359,6 +363,12 @@ export default function ProvidersList() {
           ))}
         </Tabs>
       </div>
+
+      <footer className="text-center py-6 border-t border-border mt-12">
+        <p>
+          Copyright © 2025 Department of Tourism CARAGA, All Rights Reserved
+        </p>
+      </footer>
     </div>
   );
 }
