@@ -78,7 +78,7 @@ export default function ProvidersList() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/banner-horizontal.svg"
-        className="w-full pointer-events-none"
+        className="w-full m-0 pointer-events-none"
         alt="festive banner"
       />
       <div className="bg-gradient-to-b from-primary/5 to-background border-b border-border">
@@ -86,8 +86,8 @@ export default function ProvidersList() {
           <div className="flex flex-col gap-6">
             <div className="text-center space-y-4">
               <div className="flex flex-col items-center justify-center relative">
-                <div className="flex justify-center items-center w-full md:w-1/2 pt-4 gap-2 md:gap-6 mb-4">
-                  <div className="w-full relative h-24 max-w-[180px]">
+                <div className="flex justify-center items-center w-full md:w-1/2 pt-4 md:gap-4 mb-4">
+                  <div className="w-full relative h-24 max-w-[200px]">
                     <Image
                       src="/love-caraga.png"
                       alt="LOVE Caraga"
@@ -96,14 +96,17 @@ export default function ProvidersList() {
                       priority
                     />
                   </div>
-                  <div className="w-24 h-24 relative animate-bounce-slow">
-                    <Image
-                      src="/logo.svg"
-                      alt="DOT Logo"
-                      fill
-                      className="object-contain"
-                      priority
-                    />
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="w-24 h-24 relative animate-bounce-slow">
+                      <Image
+                        src="/logo.svg"
+                        alt="DOT Logo"
+                        fill
+                        className="object-contain"
+                        priority
+                      />
+                    </div>
+                    <p className="font-semibold text-sm whitespace-nowrap">CARAGA REGION</p>
                   </div>
                   <div className="w-full relative h-24 max-w-[150px]">
                     <Image
