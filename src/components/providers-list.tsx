@@ -75,27 +75,48 @@ export default function ProvidersList() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/banner-horizontal.svg" className="w-full pointer-events-none" alt="festive banner" />
       <div className="bg-gradient-to-b from-primary/5 to-background border-b border-border">
         <div className="container mx-auto p-4">
           <div className="flex flex-col gap-6">
             <div className="text-center space-y-4">
               <div className="flex flex-col items-center justify-center relative">
-                <div className="w-24 h-24 relative animate-bounce-slow">
-                  <Image
-                    src="/logo.svg"
-                    alt="DOT Logo"
-                    fill
-                    className="object-contain"
-                    priority
-                  />
+                <div className="flex justify-center items-center w-full md:w-1/2 pt-4 gap-2 md:gap-6 mb-4">
+                  <div className="w-full relative h-24 max-w-[180px]">
+                    <Image
+                      src="/love-caraga.png"
+                      alt="LOVE Caraga"
+                      fill
+                      className="object-contain"
+                      priority
+                    />
+                  </div>
+                  <div className="w-24 h-24 relative animate-bounce-slow">
+                    <Image
+                      src="/logo.svg"
+                      alt="DOT Logo"
+                      fill
+                      className="object-contain"
+                      priority
+                    />
+                  </div>
+                  <div className="w-full relative h-24 max-w-[150px]">
+                    <Image
+                      src="/love-ph.png"
+                      alt="LOVE PH"
+                      fill
+                      className="object-contain"
+                      priority
+                    />
+                  </div>
                 </div>
-                <p className='font-medium'>CARAGA REGION</p>
               </div>
               <div className="relative">
                 <h1 className="text-4xl leading-normal font-['Barbara'] text-center bg-gradient-to-r from-pink-500 via-blue-500 to-purple-500 bg-clip-text text-transparent tracking-wider">
                   ACCREDITED TRES PER LGU
                 </h1>
-                <p className="text-muted-foreground mt-2 text-lg">
+                <p className="text-muted-foreground -mt-2 text-lg">
                   As of {asOfDate}
                 </p>
               </div>
