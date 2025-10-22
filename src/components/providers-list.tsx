@@ -74,14 +74,16 @@ export default function ProvidersList() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#f0f9ff] relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-50 via-pink-50/30 to-purple-50/20 pointer-events-none" />
+
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/banner-horizontal.svg"
-        className="w-full m-0 pointer-events-none"
+        className="w-full m-0 pointer-events-none relative z-10"
         alt="festive banner"
       />
-      <div className="bg-gradient-to-b from-primary/5 to-background border-b border-border">
+      <div className="bg-gradient-to-b from-sky-100/50 via-pink-50/30 to-background/80 border-b border-border/50 relative z-10">
         <div className="container mx-auto p-4">
           <div className="flex flex-col gap-6">
             <div className="text-center space-y-4">
@@ -106,7 +108,9 @@ export default function ProvidersList() {
                         priority
                       />
                     </div>
-                    <p className="font-semibold text-sm whitespace-nowrap">CARAGA REGION</p>
+                    <p className="font-semibold text-sm whitespace-nowrap">
+                      CARAGA REGION
+                    </p>
                   </div>
                   <div className="w-full relative h-24 max-w-[150px]">
                     <Image
@@ -179,10 +183,14 @@ export default function ProvidersList() {
             ))}
           </TabsList>
           {provinces.map((province) => (
-            <TabsContent key={province.id} value={province.id} className="my-6">
+            <TabsContent
+              key={province.id}
+              value={province.id}
+              className="my-6 z-10"
+            >
               {Object.entries(groupedProviders).map(
                 ([location, locationProviders]) => (
-                  <div key={location} className="mt-8 space-y-4">
+                  <div key={location} className="mt-8 space-y-4 z-20 relative">
                     <h2 className="text-2xl uppercase leading-normal font-['Barbara'] border-b border-border pb-3 bg-gradient-to-r from-blue-500 via-pink-500 to-purple-500 bg-clip-text text-transparent tracking-wide">
                       {location}
                     </h2>
@@ -190,9 +198,9 @@ export default function ProvidersList() {
                       {locationProviders.map((provider) => (
                         <Card
                           key={provider.id}
-                          className="group hover:shadow-xl transition-all duration-300 bg-gradient-to-b from-background to-accent/5 hover:scale-[1.02] border-border relative overflow-hidden"
+                          className="group hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm hover:scale-[1.02] border-blue-100/50 relative overflow-hidden"
                         >
-                          <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                           <CardHeader className="space-y-3 relative">
                             <CardTitle className="text-xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
                               {provider.name}
@@ -367,7 +375,7 @@ export default function ProvidersList() {
         </Tabs>
       </div>
 
-      <footer className="text-center py-6 border-t border-border mt-12">
+      <footer className="text-center py-6 border-t border-border mt-12 z-20 relative">
         <p>
           Copyright © 2025 Department of Tourism CARAGA, All Rights Reserved
         </p>
