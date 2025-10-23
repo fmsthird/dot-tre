@@ -75,16 +75,12 @@ export default function ProvidersList() {
 
   return (
     <div className="min-h-screen bg-[#f0f9ff] relative">
-      <div className="absolute inset-0 bg-[url('/festival.svg')] bg-contain bg-repeat bg-top opacity-90 pointer-events-none" />
+      <div className="absolute inset-0 w-full h-[28px] md:h-[48px] bg-[url('/banner-horizontal.svg')] bg-no-repeat bg-cover bg-center z-50" />
+      <div className="absolute inset-0 bg-[url('/festival.svg')] bg-contain bg-no-repeat bg-top opacity-90 pointer-events-none mt-6 z-0" />
       <div className="absolute inset-0 from-white/50 via-transparent to-white/30 pointer-events-none" />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/banner-horizontal.svg"
-        className="w-full m-0 pointer-events-none relative z-10"
-        alt="festive banner"
-      />
+
       <div className="from-sky-100/50 via-pink-50/30 to-background/80 border-b border-border/50 relative z-10">
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 pt-20">
           <div className="flex flex-col gap-6">
             <div className="text-center space-y-4">
               <div className="flex flex-col items-center justify-center relative">
