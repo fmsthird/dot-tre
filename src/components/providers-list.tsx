@@ -76,7 +76,7 @@ export default function ProvidersList() {
   return (
     <div className="min-h-screen bg-[#f0f9ff] relative">
       <div className="absolute inset-0 w-full h-[28px] md:h-[48px] bg-[url('/banner-horizontal.svg')] bg-no-repeat bg-cover bg-center z-50" />
-      <div className="absolute inset-0 bg-[url('/festival.svg')] bg-contain bg-no-repeat bg-top opacity-90 pointer-events-none mt-6 z-0" />
+      {/* <div className="absolute inset-0 bg-[url('/festival.svg')] bg-contain bg-no-repeat bg-top opacity-90 pointer-events-none mt-6 z-0" /> */}
       <div className="absolute inset-0 from-white/50 via-transparent to-white/30 pointer-events-none" />
 
       <div className="from-sky-100/50 via-pink-50/30 to-background/80 border-b border-border/50 relative z-10">
