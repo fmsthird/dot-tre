@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Provider } from '@/types/provider'
 import { fetchProviders } from '@/lib/providers'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export default function SiargaoIslandsPage() {
   const [providers, setProviders] = useState<Provider[]>([])
@@ -14,6 +15,38 @@ export default function SiargaoIslandsPage() {
   const [error, setError] = useState<string>('')
   const [asOfDate, setAsOfDate] = useState<string>('')
   const [searchTerm, setSearchTerm] = useState('')
+  const [showScrollTop, setShowScrollTop] = useState(false)
+
+  const LGUS = [
+    { id: 'general-luna', name: 'General Luna' },
+    { id: 'dapa', name: 'Dapa' },
+    { id: 'pilar', name: 'Pilar' },
+    { id: 'del-carmen', name: 'Del Carmen' },
+    { id: 'san-isidro', name: 'San Isidro' },
+    { id: 'santa-monica', name: 'Santa Monica' },
+    { id: 'san-benito', name: 'San Benito' },
+    { id: 'burgos', name: 'Burgos' },
+    { id: 'socorro', name: 'Socorro' },
+  ]
+
+  const scrollToLGU = (lguId: string) => {
+    const element = document.getElementById(`lgu-${lguId}`)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     setLoading(true)
@@ -29,7 +62,7 @@ export default function SiargaoIslandsPage() {
       })
   }, [])
 
-  const filteredProviders =
+  const searchFilteredProviders =
     searchTerm.trim() === ''
       ? providers
       : providers.filter((provider) => {
@@ -42,17 +75,11 @@ export default function SiargaoIslandsPage() {
           )
         })
 
-  // Group providers by location
-  const groupedProviders = filteredProviders.reduce<Record<string, Provider[]>>(
-    (acc, provider) => {
-      if (!acc[provider.location]) {
-        acc[provider.location] = []
-      }
-      acc[provider.location].push(provider)
-      return acc
-    },
-    {},
-  )
+  const getLGUProviders = (lguName: string) => {
+    return searchFilteredProviders.filter(
+      (provider) => provider.location.toLowerCase() === lguName.toLowerCase()
+    )
+  }
 
   if (loading) {
     return (
@@ -125,35 +152,56 @@ export default function SiargaoIslandsPage() {
               </div>
             </div>
 
-            <div className="flex gap-2 w-full justify-center mt-4">
-              <Input
-                type="text"
-                placeholder="Search by name, location..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full max-w-[600px] py-6 bg-background"
-              />
-              <Button
-                variant="outline"
-                onClick={() => setSearchTerm('')}
-                className="p-6 min-w-[100px] bg-primary text-primary-foreground bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm cursor-pointer hover:text-white"
-              >
-                Clear
-              </Button>
+            <div className="w-full">
+              <div className="flex items-center w-full justify-center">
+                <div className="bg-blue-500 inline-flex h-auto min-h-[2.25rem] flex-wrap items-center justify-center rounded-lg p-2 text-white w-fit gap-1">
+                  {LGUS.map((lgu) => (
+                    <button
+                      key={lgu.id}
+                      onClick={() => scrollToLGU(lgu.id)}
+                      className="h-8 rounded-md px-3 hover:bg-white/20 transition-colors whitespace-nowrap cursor-pointer text-sm font-medium"
+                    >
+                      {lgu.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-2 w-full justify-center mt-4">
+                <Input
+                  type="text"
+                  placeholder="Search by name, location..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full max-w-[600px] py-6 bg-background"
+                />
+                <Button
+                  variant="outline"
+                  onClick={() => setSearchTerm('')}
+                  className="p-6 min-w-[100px] bg-primary text-primary-foreground bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm cursor-pointer hover:text-white"
+                >
+                  Clear
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <div className="container mx-auto p-4 space-y-6 pt-6">
-        {Object.entries(groupedProviders).map(
-          ([location, locationProviders]) => (
-            <div key={location} className="mt-8 space-y-4 z-20 relative">
-              <h2 className="text-2xl uppercase leading-normal font-['Barbara'] border-b border-border pb-3 bg-gradient-to-r from-blue-500 via-pink-500 to-purple-500 bg-clip-text text-transparent tracking-wide">
-                {location}
+        {LGUS.map((lgu) => {
+          const lguProviders = getLGUProviders(lgu.name)
+          if (searchTerm.trim() !== '' && lguProviders.length === 0) {
+            return null
+          }
+          return (
+            <div key={lgu.id} id={`lgu-${lgu.id}`} className="scroll-mt-24">
+              <h2 className="text-2xl uppercase leading-normal font-['Barbara'] border-b border-border pb-3 bg-gradient-to-r from-blue-500 via-pink-500 to-purple-500 bg-clip-text text-transparent tracking-wide mb-6">
+                {lgu.name}
               </h2>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {locationProviders.map((provider) => (
+              {lguProviders.length > 0 ? (
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {lguProviders.map((provider) => (
                   <Card
                     key={provider.id}
                     className="group hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm hover:scale-[1.02] border-blue-100/50 relative overflow-hidden"
@@ -296,13 +344,20 @@ export default function SiargaoIslandsPage() {
                       </div>
                     </CardContent>
                   </Card>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-8 text-center">
+                  <p className="text-lg text-muted-foreground">
+                    No providers found in {lgu.name}
+                  </p>
+                </div>
+              )}
             </div>
-          ),
-        )}
+          )
+        })}
 
-        {Object.keys(groupedProviders).length === 0 && (
+        {providers.length === 0 && (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -334,6 +389,28 @@ export default function SiargaoIslandsPage() {
           Copyright 2025 Department of Tourism CARAGA, All Rights Reserved
         </p>
       </footer>
+
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 z-50 bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"
+          aria-label="Scroll to top"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="m18 15-6-6-6 6" />
+          </svg>
+        </button>
+      )}
     </div>
   )
 }
