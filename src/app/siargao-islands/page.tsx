@@ -16,7 +16,7 @@ export default function SiargaoIslandsPage() {
   const [asOfDate, setAsOfDate] = useState<string>('')
   const [searchTerm, setSearchTerm] = useState('')
   const [showScrollTop, setShowScrollTop] = useState(false)
-  const [activeLGU, setActiveLGU] = useState<string>('')
+  const [activeLGU, setActiveLGU] = useState<string>('general-luna')
 
   const LGUS = [
     { id: 'general-luna', name: 'General Luna' },
