@@ -20,6 +20,11 @@ const PROVINCE_FILES = [
     file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=1686352904`,
   },
   {
+    id: 'siargao-islands',
+    name: 'Siargao Islands',
+    file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=1742714211`,
+  },
+  {
     id: 'surigao-norte',
     name: 'Surigao del Norte',
     file: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=291833559`,

@@ -16,7 +16,7 @@ export default function ProvidersList() {
   const [asOfDate, setAsOfDate] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState('');
   const [activeProvince, setActiveProvince] = useState<string>('agusan-norte');
-  const provinces = getProvinces();
+  const provinces = getProvinces().filter((p) => p.id !== 'siargao-islands');
 
   useEffect(() => {
     setLoading(true);
