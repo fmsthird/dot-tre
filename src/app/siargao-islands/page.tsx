@@ -16,6 +16,7 @@ export default function SiargaoIslandsPage() {
   const [asOfDate, setAsOfDate] = useState<string>('')
   const [searchTerm, setSearchTerm] = useState('')
   const [showScrollTop, setShowScrollTop] = useState(false)
+  const [activeLGU, setActiveLGU] = useState<string>('')
 
   const LGUS = [
     { id: 'general-luna', name: 'General Luna' },
@@ -30,6 +31,7 @@ export default function SiargaoIslandsPage() {
   ]
 
   const scrollToLGU = (lguId: string) => {
+    setActiveLGU(lguId)
     const element = document.getElementById(`lgu-${lguId}`)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -159,7 +161,11 @@ export default function SiargaoIslandsPage() {
                     <button
                       key={lgu.id}
                       onClick={() => scrollToLGU(lgu.id)}
-                      className="h-8 rounded-md px-3 hover:bg-white/20 transition-colors whitespace-nowrap cursor-pointer text-sm font-medium"
+                      className={`h-8 rounded-md px-3 transition-colors whitespace-nowrap cursor-pointer text-sm font-medium ${
+                        activeLGU === lgu.id
+                          ? 'bg-white text-blue-600 shadow-sm'
+                          : 'hover:bg-white/20'
+                      }`}
                     >
                       {lgu.name}
                     </button>
